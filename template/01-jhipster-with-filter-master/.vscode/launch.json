@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-SpringrestApp<springrest>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "vn.hoidanit.SpringrestApp",
+      "projectName": "springrest",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
