@@ -9,7 +9,7 @@
  * Copyright (c) 2025 Hỏi Dân IT. All Rights Reserved.
  */
 
-package com.nvminh162.projectxbackend.UserTest;
+package com.nvminh162.projectxbackend.controller;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.nvminh162.projectxbackend.entity.User;
+import com.nvminh162.projectxbackend.service.UserService;
 
 @Controller
 public class UserController {

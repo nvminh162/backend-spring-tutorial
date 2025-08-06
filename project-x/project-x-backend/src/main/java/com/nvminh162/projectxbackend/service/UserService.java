@@ -9,13 +9,16 @@
  * Copyright (c) 2025 Hỏi Dân IT. All Rights Reserved.
  */
 
-package com.nvminh162.projectxbackend.UserTest;
+package com.nvminh162.projectxbackend.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.nvminh162.projectxbackend.entity.User;
+import com.nvminh162.projectxbackend.repository.UserRepository;
 
 @Service
 public class UserService {

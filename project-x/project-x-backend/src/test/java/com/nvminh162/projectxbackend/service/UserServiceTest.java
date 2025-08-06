@@ -1,4 +1,4 @@
-package com.nvminh162.projectxbackend.UserTest.service;
+package com.nvminh162.projectxbackend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,9 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.nvminh162.projectxbackend.UserTest.User;
-import com.nvminh162.projectxbackend.UserTest.UserRepository;
-import com.nvminh162.projectxbackend.UserTest.UserService;
+import com.nvminh162.projectxbackend.entity.User;
+import com.nvminh162.projectxbackend.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
