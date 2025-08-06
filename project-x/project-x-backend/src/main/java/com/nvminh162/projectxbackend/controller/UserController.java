@@ -16,6 +16,8 @@ import com.nvminh162.projectxbackend.entity.ApiResponse;
 import com.nvminh162.projectxbackend.entity.User;
 import com.nvminh162.projectxbackend.service.impl.UserServiceImpl;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 
@@ -26,7 +28,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users")
-	public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
+	public ResponseEntity<ApiResponse<User>> createUser(@Valid @RequestBody User user) {
 		User created = userService.createUser(user);
 		var result = new ApiResponse<>(HttpStatus.CREATED, "Created User", created, null);
 		// ApiResponse<User> result = new ApiResponse<User>(HttpStatus.CREATED, "Created
@@ -55,11 +57,14 @@ public class UserController {
 		return ResponseEntity.ok(result);
 	}
 
-	/* @ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<?> handleNotFound(NoSuchElementException ex) {
-		var result = new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR, "Handle Not Found", null, ex.getMessage());
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-	} */
+	/*
+	 * @ExceptionHandler(NoSuchElementException.class)
+	 * public ResponseEntity<?> handleNotFound(NoSuchElementException ex) {
+	 * var result = new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR,
+	 * "Handle Not Found", null, ex.getMessage());
+	 * return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+	 * }
+	 */
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<ApiResponse<User>> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
