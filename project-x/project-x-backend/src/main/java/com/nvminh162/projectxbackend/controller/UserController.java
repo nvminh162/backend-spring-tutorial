@@ -4,19 +4,19 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nvminh162.projectxbackend.entity.ApiResponse;
 import com.nvminh162.projectxbackend.entity.User;
 import com.nvminh162.projectxbackend.service.impl.UserServiceImpl;
 
-@Controller
+@RestController
 public class UserController {
 
 	private final UserServiceImpl userService;
@@ -55,6 +55,11 @@ public class UserController {
 		return ResponseEntity.ok(result);
 	}
 
+	/* @ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<?> handleNotFound(NoSuchElementException ex) {
+		var result = new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR, "Handle Not Found", null, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+	} */
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<ApiResponse<User>> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
