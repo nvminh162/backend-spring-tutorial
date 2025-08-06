@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nvminh162.projectxbackend.entity.User;
-import com.nvminh162.projectxbackend.service.UserService;
+import com.nvminh162.projectxbackend.service.impl.UserServiceImpl;
 
 @Controller
 public class UserController {
 
-	private final UserService userService;
+	private final UserServiceImpl userService;
 
-	public UserController(UserService userService) {
+	public UserController(UserServiceImpl userService) {
 		this.userService = userService;
 	}
 

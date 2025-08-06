@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nvminh162.projectxbackend.entity.User;
 import com.nvminh162.projectxbackend.repository.UserRepository;
+import com.nvminh162.projectxbackend.service.impl.UserServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -25,7 +26,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     /*
      * File test: <Class Name>Test.java
