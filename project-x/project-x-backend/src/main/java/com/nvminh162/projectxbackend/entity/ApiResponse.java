@@ -11,6 +11,8 @@ public class ApiResponse<T> {
 	private String errorCode;
 	private LocalDateTime timestamp = LocalDateTime.now();
 
+	public ApiResponse() {}
+
 	public ApiResponse(HttpStatus httpStatus, String message, T data, String errorCode) {
 		this.status = httpStatus.is2xxSuccessful() ? "success" : "error";
 		this.message = message;
