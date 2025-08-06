@@ -7,22 +7,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nvminh162.projectxbackend.IntegrationTest;
 import com.nvminh162.projectxbackend.entity.User;
 import com.nvminh162.projectxbackend.repository.UserRepository;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@IntegrationTest
 @AutoConfigureMockMvc
+@Transactional //back create data test
 public class UserControllerIT {
 
         @Autowired
@@ -34,10 +34,14 @@ public class UserControllerIT {
         @Autowired
         private UserRepository userRepository;
 
+        @BeforeEach
+        public void init() {
+                this.userRepository.deleteAll();
+        }
+
         @Test
         public void createUser_shouldRReturnUser_whenValid() throws Exception {
                 // Arrange
-                this.userRepository.deleteAll();
                 User inputUser = new User(null, "nvminh162 IT", "nvminh162IT@gmail.com");
 
                 // Act
@@ -56,7 +60,6 @@ public class UserControllerIT {
         @Test
         public void getAllUsers() throws Exception {
                 // Arrange
-                this.userRepository.deleteAll();
                 User user1 = new User(null, "name1", "name1@gmail.com");
                 User user2 = new User(null, "name2", "name2@gmail.com");
                 List<User> users = List.of(user1, user2);
@@ -80,7 +83,6 @@ public class UserControllerIT {
         @Test
         public void getUserById_shouldReturnUser_whenValid() throws Exception {
                 // Arrange
-                this.userRepository.deleteAll();
                 User user = new User(null, "name1", "name1@gmail.com");
                 User userInput = this.userRepository.saveAndFlush(user);
 
@@ -107,7 +109,6 @@ public class UserControllerIT {
         @Test
         public void updateUser() throws Exception {
                 // arrange
-                this.userRepository.deleteAll();
                 User user = new User(null, "old-name", "old@gmail.com");
                 User userInput = this.userRepository.saveAndFlush(user);
 
@@ -130,7 +131,6 @@ public class UserControllerIT {
         @Test
         public void deleteUser() throws Exception {
                 // arrange
-                this.userRepository.deleteAll();
                 User user = new User(null, "delete-name", "delete@gmail.com");
                 User userInput = this.userRepository.saveAndFlush(user);
 
@@ -144,6 +144,4 @@ public class UserControllerIT {
                 assertEquals(0, countDB);
 
         }
-
-        // #67
 }
