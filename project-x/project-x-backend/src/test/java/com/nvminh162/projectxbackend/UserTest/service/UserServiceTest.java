@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,16 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    /*
+     * File test: <Class Name>Test.java
+     * Name test method: <methodBeingTested>_should<expected>_when<condition>()
+     */
+
+    /*
+     * HOW TO RUN TEST
+     * => `./mvnw test -Dtest=UserServiceTest`
+     */
 
     @Test
     public void createUser_shouldReturnUser_whenEmailValid() {
@@ -95,5 +106,67 @@ public class UserServiceTest {
         assertEquals(true, result.isPresent());
     }
 
-    // còn delete và update
+    @Test
+    public void deleteUser_shouldReturnVoid_WhenUserExist() {
+        // arrange
+        Long inputId = 1L;
+
+        when(this.userRepository.existsById(inputId)).thenReturn(true);
+
+        // act
+        this.userService.deleteUser(inputId);
+
+        // assert
+        verify(this.userRepository).deleteById(1L);
+    }
+
+    @Test
+    public void deleteUser_shouldReturnVoid_WhenUserNotExist() {
+        // arrange
+        Long inputId = 1L;
+
+        when(this.userRepository.existsById(inputId)).thenReturn(false);
+
+        // act
+        Exception ex = assertThrows(NoSuchElementException.class, () -> {
+            this.userService.deleteUser(inputId);
+        });
+
+        // assert
+        assertEquals("User not found", ex.getMessage());
+    }
+
+    @Test
+    public void updateUser_shouldReturnUser_WhenValid() {
+        // arrange
+        Long inputId = 1L;
+        User inputUser = new User(1L, "nvminh1602", "nvminh1602@gmail.com"); // OLD DATA
+        User outputUser = new User(1L, "nvminh162", "nvminh162@gmail.com"); // NEW DATA
+
+        when(this.userRepository.findById(inputId)).thenReturn(Optional.of(inputUser));
+        when(this.userRepository.save(any())).thenReturn(outputUser);
+
+        // act
+        User result = this.userService.updateUser(inputId, inputUser);
+
+        // assert
+        assertEquals(outputUser.getName(), result.getName());
+    }
+
+    @Test
+    public void updateUser_shouldThrowException_WhenUserNotFound() {
+        // arrange
+        Long inputId = 1L;
+        User inputUser = new User(1L, "nvminh162", "nvminh162@gmail.com");
+
+        when(this.userRepository.findById(inputId)).thenReturn(Optional.empty());
+
+        // act
+        Exception ex = assertThrows(NoSuchElementException.class, () -> {
+            this.userService.updateUser(inputId, inputUser);
+        });
+
+        // assert
+        assertEquals("User not found", ex.getMessage());
+    }
 }
