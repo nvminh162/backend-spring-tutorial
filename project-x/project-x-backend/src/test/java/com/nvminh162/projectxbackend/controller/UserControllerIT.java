@@ -25,126 +25,125 @@ import com.nvminh162.projectxbackend.repository.UserRepository;
 @AutoConfigureMockMvc
 public class UserControllerIT {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+        @Autowired
+        private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    /*
-     * @Test
-     * public void createUser_shouldRReturnUser_whenValid() throws Exception {
-     * // Arrange
-     * User inputUser = new User(null, "nvminh162 IT", "nvminh162IT@gmail.com");
-     * 
-     * // Act
-     * String resultStr = mockMvc.perform(
-     * post("/users")
-     * .contentType(MediaType.APPLICATION_JSON)
-     * .content(objectMapper
-     * .writeValueAsBytes(inputUser)))
-     * .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString
-     * ();
-     * 
-     * // Assert
-     * System.out.println(">>>>>>>>>>>>>>>>>>>" + resultStr);
-     * User outputUser = objectMapper.readValue(resultStr, User.class);
-     * assertEquals(inputUser.getName(), outputUser.getName());
-     * }
-     */
+        @Test
+        public void createUser_shouldRReturnUser_whenValid() throws Exception {
+                // Arrange
+                this.userRepository.deleteAll();
+                User inputUser = new User(null, "nvminh162 IT", "nvminh162IT@gmail.com");
 
-    @Test
-    public void getAllUsers() throws Exception {
-        // Arrange
-        this.userRepository.deleteAll();
-        User user1 = new User(null, "name1", "name1@gmail.com");
-        User user2 = new User(null, "name2", "name2@gmail.com");
-        List<User> users = List.of(user1, user2);
-        this.userRepository.saveAll(users);
+                // Act
+                String resultStr = mockMvc.perform(
+                                post("/users")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper
+                                                                .writeValueAsBytes(inputUser)))
+                                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 
-        // Act
-        String resultStr = this.mockMvc.perform(get("/users")).andExpect(status().isOk()).andReturn().getResponse()
-                .getContentAsString();
+                // Assert
+                User outputUser = objectMapper.readValue(resultStr, User.class);
+                assertEquals(inputUser.getName(), outputUser.getName());
+        }
 
-        // List<User> result = this.objectMapper.readValue(resultStr, User[].class);
-        List<User> result = this.objectMapper.readValue(resultStr,
-                new com.fasterxml.jackson.core.type.TypeReference<List<User>>() {
-                });
+        @Test
+        public void getAllUsers() throws Exception {
+                // Arrange
+                this.userRepository.deleteAll();
+                User user1 = new User(null, "name1", "name1@gmail.com");
+                User user2 = new User(null, "name2", "name2@gmail.com");
+                List<User> users = List.of(user1, user2);
+                this.userRepository.saveAll(users);
 
-        // Assert
-        assertEquals(2, result.size());
-        assertEquals("name1", result.get(0).getName());
-    }
+                // Act
+                String resultStr = this.mockMvc.perform(get("/users")).andExpect(status().isOk()).andReturn()
+                                .getResponse()
+                                .getContentAsString();
 
-    @Test
-    public void getUserById_shouldReturnUser_whenValid() throws Exception {
-        // Arrange
-        this.userRepository.deleteAll();
-        User user = new User(null, "name1", "name1@gmail.com");
-        User userInput = this.userRepository.saveAndFlush(user);
+                // List<User> result = this.objectMapper.readValue(resultStr, User[].class);
+                List<User> result = this.objectMapper.readValue(resultStr,
+                                new com.fasterxml.jackson.core.type.TypeReference<List<User>>() {
+                                });
 
-        // Act
-        String resultStr = this.mockMvc.perform(get("/users/{id}", userInput.getId())).andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                // Assert
+                assertEquals(2, result.size());
+                assertEquals("name1", result.get(0).getName());
+        }
 
-        User userOutput = this.objectMapper.readValue(resultStr, User.class);
-        // Assert
-        assertEquals("name1", userOutput.getName());
-    }
+        @Test
+        public void getUserById_shouldReturnUser_whenValid() throws Exception {
+                // Arrange
+                this.userRepository.deleteAll();
+                User user = new User(null, "name1", "name1@gmail.com");
+                User userInput = this.userRepository.saveAndFlush(user);
 
-    @Test
-    public void getUserById_shouldEmpty_whenIdNotFound() throws Exception {
-    // Arrange
+                // Act
+                String resultStr = this.mockMvc.perform(get("/users/{id}", userInput.getId()))
+                                .andExpect(status().isOk())
+                                .andReturn().getResponse().getContentAsString();
 
-    // Act
-    this.mockMvc.perform(get("/users/{id}", 0)).andExpect(status().isNotFound());
+                User userOutput = this.objectMapper.readValue(resultStr, User.class);
+                // Assert
+                assertEquals("name1", userOutput.getName());
+        }
 
-    // Assert
-    }
+        @Test
+        public void getUserById_shouldEmpty_whenIdNotFound() throws Exception {
+                // Arrange
 
-    @Test
-    public void updateUser() throws Exception {
-        // arrange
-        this.userRepository.deleteAll();
-        User user = new User(null, "old-name", "old@gmail.com");
-        User userInput = this.userRepository.saveAndFlush(user);
+                // Act
+                this.mockMvc.perform(get("/users/{id}", 0)).andExpect(status().isNotFound());
 
-        User updateUser = new User(userInput.getId(), "new-name", "new@gmail.com");
+                // Assert
+        }
 
-        // action
-        String resultStr = this.mockMvc
-                .perform(put("/users/{id}", userInput.getId())
-                        .content(objectMapper.writeValueAsBytes(updateUser))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+        @Test
+        public void updateUser() throws Exception {
+                // arrange
+                this.userRepository.deleteAll();
+                User user = new User(null, "old-name", "old@gmail.com");
+                User userInput = this.userRepository.saveAndFlush(user);
 
-        User userOutput = this.objectMapper.readValue(resultStr, User.class);
+                User updateUser = new User(userInput.getId(), "new-name", "new@gmail.com");
 
-        // Assert
-        assertEquals(updateUser.getName(), userOutput.getName());
-    }
+                // action
+                String resultStr = this.mockMvc
+                                .perform(put("/users/{id}", userInput.getId())
+                                                .content(objectMapper.writeValueAsBytes(updateUser))
+                                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andReturn().getResponse().getContentAsString();
 
-    @Test
-    public void deleteUser() throws Exception {
-        // arrange
-        this.userRepository.deleteAll();
-        User user = new User(null, "delete-name", "delete@gmail.com");
-        User userInput = this.userRepository.saveAndFlush(user);
+                User userOutput = this.objectMapper.readValue(resultStr, User.class);
 
-        // action
-        this.mockMvc.perform(delete("/users/{id}", userInput.getId())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                // Assert
+                assertEquals(updateUser.getName(), userOutput.getName());
+        }
 
-        // assert
-        long countDB = this.userRepository.count();
-        assertEquals(0, countDB);
+        @Test
+        public void deleteUser() throws Exception {
+                // arrange
+                this.userRepository.deleteAll();
+                User user = new User(null, "delete-name", "delete@gmail.com");
+                User userInput = this.userRepository.saveAndFlush(user);
 
-    }
+                // action
+                this.mockMvc.perform(delete("/users/{id}", userInput.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNoContent());
 
-    // #67
+                // assert
+                long countDB = this.userRepository.count();
+                assertEquals(0, countDB);
+
+        }
+
+        // #67
 }
