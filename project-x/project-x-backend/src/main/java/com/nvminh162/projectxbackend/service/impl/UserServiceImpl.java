@@ -38,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(Long id, User updatedUser) {
+		if (userRepository.existsByEmail(updatedUser.getEmail())) {
+			throw new IllegalArgumentException("Email already exists");
+		}
 		return userRepository.findById(id).map(user -> {
 			user.setName(updatedUser.getName());
 			user.setEmail(updatedUser.getEmail());

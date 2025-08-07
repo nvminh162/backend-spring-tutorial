@@ -3,14 +3,14 @@ import { useState } from "react";
 import { createUserAPI } from "../../services/api";
 
 interface IProps {
-  isModalOpen: boolean;
-  setIsModalOpen: (v: boolean) => void;
+  isOpenCreateModal: boolean;
+  setIsOpenCreateModal: (v: boolean) => void;
   fetchUsers: any;
 }
 
 const CreateUserModal = (props: IProps) => {
   const { notification, message } = App.useApp();
-  const { isModalOpen, setIsModalOpen, fetchUsers } = props;
+  const { isOpenCreateModal, setIsOpenCreateModal, fetchUsers } = props;
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,7 +29,7 @@ const CreateUserModal = (props: IProps) => {
         description: m,
       });
     } finally {
-      setIsModalOpen(false);
+      setIsOpenCreateModal(false);
       setName("");
       setEmail("");
       await fetchUsers();
@@ -41,9 +41,9 @@ const CreateUserModal = (props: IProps) => {
     <Modal
       maskClosable={false}
       title="Create A User"
-      open={isModalOpen}
+      open={isOpenCreateModal}
       onOk={handleSubmit}
-      onCancel={() => setIsModalOpen(false)}
+      onCancel={() => setIsOpenCreateModal(false)}
       okText={"Save"}
       okButtonProps={{ loading: isLoading }}
     >
