@@ -19,6 +19,7 @@ import com.nvminh162.projectxbackend.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 
 @RestController
+// @CrossOrigin(origins = "*") // ko tốt
 public class UserController {
 
 	private final UserServiceImpl userService;
