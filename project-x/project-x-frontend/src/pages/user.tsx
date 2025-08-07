@@ -1,49 +1,69 @@
-import { Table } from "antd";
-import axios from "axios";
-import { useEffect } from "react";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { Button, Table } from "antd";
+import { useEffect, useState } from "react";
+import CreateUserModal from "../components/modal/create.user.modal";
+import { getUsersAPI } from "../services/api";
+
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
 
 const UserPage = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fetchUsers = async () => {
+    const res = await getUsersAPI();
+    if (res?.data?.status === "success") {
+      setUsers(res?.data?.data);
+    }
+  };
 
   useEffect(() => {
-    axios.get("http://localhost:8080/users")
-  }, [])
-
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+    fetchUsers();
+  }, []);
 
   const columns = [
     {
+      title: "ID",
+      dataIndex: "id",
+    },
+    {
       title: "Name",
       dataIndex: "name",
-      key: "name",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Email",
+      dataIndex: "email",
     },
   ];
 
   return (
     <div style={{ padding: 10 }}>
-      <Table bordered dataSource={dataSource} columns={columns} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h3>Table Users</h3>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          type="primary"
+          icon={<PlusCircleOutlined />}
+        >
+          ADD
+        </Button>
+      </div>
+      <Table bordered dataSource={users} columns={columns} rowKey={"id"} />
+      <CreateUserModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        fetchUsers={fetchUsers}
+      />
     </div>
   );
 };

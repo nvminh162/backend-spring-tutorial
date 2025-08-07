@@ -38,7 +38,7 @@ public class GlobalException {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllException(Exception ex) {
-        var result = new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR, "Handle All Exception", null, ex.getMessage());
+        var result = new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null, "INTERNAL_SERVER_ERROR");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
     }
 }
