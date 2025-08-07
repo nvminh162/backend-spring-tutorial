@@ -3,7 +3,7 @@ import {
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Button, message, Popconfirm, Table } from "antd";
+import { App, Button, Popconfirm, Table } from "antd";
 import { useEffect, useState } from "react";
 import CreateUserModal from "../components/modal/create.user.modal";
 import { deleteUserAPI, getUsersAPI } from "../services/api";
@@ -16,6 +16,7 @@ interface IUser {
 }
 
 const UserPage = () => {
+  const { message } = App.useApp();
   const [users, setUsers] = useState<IUser[]>([]);
   const [userUpdate, setUserUpdate] = useState<IUser | null>(null);
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
